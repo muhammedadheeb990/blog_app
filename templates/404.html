@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lost in Metaphor | 404</title>
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
+                        url("{% static 'images/404-bg.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            font-family: 'Playfair Display', serif;
+            color: white;
+        }
+
+        .error-container {
+            height: 100vh;
+        }
+
+        .error-code {
+            font-size: 140px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            color: #ffc107;
+        }
+
+        .btn-custom {
+            background-color: #ffc107;
+            color: black;
+            font-weight: 600;
+            padding: 10px 25px;
+        }
+
+        .btn-custom:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex justify-content-center align-items-center error-container">
+    <div class="text-center">
+        <h1 class="error-code">404</h1>
+        <h2 class="mb-4">You've wandered too far into the metaphor.</h2>
+        <p class="text-muted mb-4">
+            The story you're searching for doesn't exist… or maybe it was never written.
+        </p>
+        <a href="/" class="btn btn-custom btn-lg">
+            Return to Homepage
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
