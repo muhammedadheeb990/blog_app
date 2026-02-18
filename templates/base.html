@@ -14,16 +14,36 @@
 <body>
     <div class="container">
       <header class="blog-header py-3">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-          <div class="col-8 pt-1">
-            <a class="blog-header-logo text-dark" href="/">Metaphor Blog</a>
-          </div>
-          <div class="col-4 d-flex justify-content-end align-items-center">
-            <a class="btn btn-sm btn-warning" href="#">Sign In</a> &nbsp;
-            <a class="btn btn-sm btn-outline-secondary" href="#">Register</a>
-          </div>
+      <div class="row align-items-center">
+        <div class="col-4 pt-1">
+          <a class="blog-header-logo text-dark" href="/">Metaphor Blog</a>
         </div>
-      </header>
+      <div class="col-4">
+      <form action="{% url 'search' %}" method="GET">
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            name="keyword"
+            value="{{ keyword }}"
+            placeholder="Enter search term..."
+          />
+          <button type="submit" class="btn btn-warning">
+            Go!
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-4 d-flex justify-content-end align-items-center">
+      <a class="btn btn-sm btn-warning" href="#">Sign In</a>
+      &nbsp;
+      <a class="btn btn-sm btn-outline-secondary" href="#">Register</a>
+    </div>
+
+  </div>
+</header>
+
 
       <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-between">
