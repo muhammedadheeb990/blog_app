@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 class Category(models.Model):
@@ -37,4 +38,15 @@ class Blog(models.Model):
     
     def __str__(self):
         return self.title
+
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            super().save(*args, **kwargs)
+
+        if not self.slug:
+            self.slug = f"{slugify(self.title)}-{self.pk}"
+            kwargs['force_insert'] = False
+
+        super().save(*args, **kwargs)
         
