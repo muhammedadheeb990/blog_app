@@ -1,11 +1,28 @@
-{% extends "base.html" %} 
+{% extends "base.html" %} {% block content %}
 
-{% block content %}
+<style>
+  .blog-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .blog-content img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .blog-content table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+</style>
 
 <!-- Page content-->
 <div class="container mt-5">
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-9">
       <!-- Post content-->
       <article>
         <!-- Post header-->
@@ -18,56 +35,70 @@
           </div>
           <!-- Post category-->
           <a class="badge bg-warning text-decoration-none text-light" href="#!"
-            >{{ single_blog.category  }}</a
+            >{{ single_blog.category }}</a
           >
         </header>
         <!-- Preview image figure-->
-        <figure class="mb-4"><img class="img-fluid rounded" src="{{ single_blog.featured_image.url }}" alt="..." /></figure>   
+        {% if single_blog.featured_image %}
+        <figure class="mb-4">
+          <img
+            class="img-fluid rounded w-100"
+            src="{{ single_blog.featured_image.url }}"
+            alt=""
+          />
+        </figure>
+        {% endif %}
         <!-- Post content-->
         <section class="mb-5">
-          <p class="fs-5 mb-4">{{ single_blog.short_description}}</p>
-          <p class="fs-5 mb-4">{{ single_blog.blog_body}}</p>
+          <p class="fs-5 mb-4 blog-content">
+            {{ single_blog.short_description }}
+          </p>
+          <div class="fs-5 mb-4 blog-content">
+            {{ single_blog.blog_body|safe }}
+          </div>
 
           <!-- Comments-->
-           <h4>Comments ({{ comment_count }})</h4>
-           {% if comments %}
-                {% for comment in comments %}
-                    <div class="card mt-1">
-                      <div class="card-body">
-                        <p class "card-text mb-0">{{ comment }}</p>
-                        <span>
-                          <small>By {{ comment.user }}</small>
-                          <small>  {{ comment.created_at| timesince }} ago </small>
+          <!-- Comments-->
+          <h4>Comments ({{ comment_count }})</h4>
 
-                        </span>
-                      </div>
-                    </div>  
-                {% endfor %}
-           {% else %}
-           No comments yet.
-           {% endif %}
-           <br>
-           <div class="form-group">
-            {% if user.is_authenticated %}
-            <form action="" method="POST">
-              {% csrf_token %}
-              <div class="form-group">
-                <textarea name="comment" class="form-control" placeholder="write your comment"></textarea>
-                <input type="submit" value="Submit" class="btn btn-warning mt-2">
-              </div>  
-            </form>
-            {% else %}
-            <p>Please <span><a href="{% url 'login' %}">login</a></span> to write a comment!</p>
-            {% endif %}
-           </div>
+          {% if comments %} {% for comment in comments %}
 
+          <div class="card mt-2 shadow-sm">
+            <div class="card-body">
+              <p class="card-text mb-1">{{ comment.comment }}</p>
+
+              <small class="text-muted">
+                By {{ comment.user }} • {{ comment.created_at|timesince }} ago
+              </small>
+
+              {% if user == comment.user or user.is_superuser %}
+              <div class="mt-2">
+                <a
+                  href="{% url 'edit_comment' comment.id %}"
+                  class="btn btn-sm btn-warning"
+                >
+                  Edit
+                </a>
+
+                <a
+                  href="{% url 'delete_comment' comment.id %}"
+                  class="btn btn-sm btn-danger"
+                >
+                  Delete
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+          {% endfor %} {% else %} No comments yet. {% endif %}
         </section>
       </article>
     </div>
     <!-- Side widgets-->
-    <div class="col-lg-4">
+    <div class="col-lg-3">
       <!-- Search widget-->
-      
+
       <!-- Categories widget-->
       <div class="card mb-4 p-3">
         <h4 class="font-italic">Categories</h4>
@@ -76,7 +107,11 @@
             <div class="col-sm-6">
               <ul class="list-unstyled mb-0">
                 {% for cat in categories %}
-                <li><a href="{% url 'posts_by_category' cat.id %}">{{ cat.category_name }}</a></li>
+                <li>
+                  <a href="{% url 'posts_by_category' cat.id %}"
+                    >{{ cat.category_name }}</a
+                  >
+                </li>
                 {% endfor %}
               </ul>
             </div>
